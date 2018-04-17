@@ -1,10 +1,26 @@
+body{
+	min-width: 650px;
+}
 
 .navbar{
 	margin-bottom:0px;
+	max-width:1400px;
+	margin:0px auto;
 }
 
 a {
 	color:#000 !important;
+}
+
+.logo-text-header{
+	color:#333;
+	font-size:12px;
+	font-weight:200;
+	margin-left:10px;
+}
+
+.container-fluid{
+	max-width: 1400px;
 }
 
 .jumbotron{
@@ -12,6 +28,11 @@ a {
 	background-size: cover;
 	background-position: center;
 	height: 30vh;
+}
+
+.jumbotron-div{
+	max-width:1400px;
+	margin:0px auto;
 }
 
 .jumbotron-title{
@@ -30,7 +51,6 @@ a {
 }
 
 .btn-transparent{
-	/* background-color:transparent !important; */
 	background-color:rgba(255, 255, 255, 0.05);
 	border: 1px solid #fff;
 	color:#fff;
@@ -44,7 +64,6 @@ a {
 }
 
 .btn-category{
-	/*border:1px solid #aaa;*/
 	width:100%;
 	text-align:left;
 	color:#555;
@@ -54,7 +73,7 @@ a {
 
 .btn-category span{
 	background-color:#eee !important;
-	font-size:11px;
+	font-size:12px;
 	font-weight: 300;
 	color:#555;
 }
@@ -62,6 +81,10 @@ a {
 .btn-category:hover{
 	color:#000;
 	background-color:#eee;
+}
+
+.show-offer-button{
+	border-radius:1px solid #888;color:#888;
 }
 
 .side-content-column{
@@ -88,9 +111,48 @@ a {
 	font-size: 22px;
 }
 
+.text-white{
+	color:#fff !important;
+}
+
+.tag-list{
+	margin-left:10px;
+}
+
 .logo-text-highlight{
 	color:#c00000;
 	font-weight:600;
+}
+
+.job-num-results{
+	padding:10px 30px;
+	margin:0px;
+}
+
+.job-num-results span { color: #333; }
+
+.job-search-div {
+	padding:0px;margin:0px;text-align:right;
+}
+
+.job-search-div form{
+	margin-top:4px;
+}
+
+/* Job Table */
+.no-job-list{
+	text-align:center;
+	margin-top:20vh;
+	width:80%;
+	margin:15vh auto;
+}
+
+.job-table{
+	margin-top:20px;
+}
+
+.job-logo-div{
+	width:48px;
 }
 
 .job-box {
@@ -111,10 +173,44 @@ a {
 	font-size:24px;
 }
 
+.job-tags{
+	padding-top:28px;
+	width:24%;
+}
+
+.job-date{
+	width:8%;
+	padding-top:30px;
+	font-size:12px;
+}
+
+.job-apply{
+	width:130px;
+	padding-top:18px;
+}
+
+.image-job-logo{
+	height:64px;
+	min-width:48px;
+	min-height:48px;
+	background-color:transparent !important;
+	backgound-position:center;
+	background-size:cover;
+	background-size:100% 100%;
+}
+
+.text-job-logo{
+	min-width:48px;min-height:48px;
+}
+
 .job-info h2{
 	margin-top:8px;
 	margin-bottom:0px;
 	font-size: 22px;
+}
+
+.job-info p{
+	font-size:14px;
 }
 
 .btn-apply{
@@ -122,14 +218,14 @@ a {
 }
 
 .job-badge{
-	font-size: 11px;
+	font-size: 12px;
 	background-color: transparent;
 	border: 1px solid #333;
-	border-radius:4px;
-	color:#333;
-	margin-right:3px;
-	cursor:pointer;
-	padding-top:4px;
+	border-radius: 4px;
+	color: #333;
+	margin-right: 3px;
+	cursor: pointer;
+	padding-top: 4px;
 	font-weight: 200;
 }
 
@@ -206,37 +302,122 @@ a {
 	content: "x";
 }
 
-/* Stripe */
-.StripeElement {
-  background-color: white;
-  height: 40px;
-  padding: 10px 12px;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
-}
-
-.StripeElement--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
-}
-
-.StripeElement--invalid {
-  border-color: #fa755a;
-}
-
-.StripeElement--webkit-autofill {
-  background-color: #fefde5 !important;
-}
-/* end stripe */
-
 .form-text{
 	margin-left:30px;color:#ddd;font-size:10px;
 }
 
+.button-form-submit{
+	margin:20px auto;
+	margin-left:25%;
+	height:40px;
+	width:50%;
+	background-color:#de3c3c;
+	border:0px;
+}
 
-/* Extra Small Devices, Phones */ 
+.close-modal-button {
+	color:#fff;
+	text-align:center;
+	cursor:pointer;
+	position:fixed;
+	bottom:12vh;
+	width:90%;
+	font-weight:600;
+}
+
+.footer-bar{
+	margin-top:60px;
+	background-color:#de3c3c;
+	color:#fff;
+	min-height:10vh;
+	padding:20px 0px;
+}
+
+.text-logo-style{
+	color:#eee;
+	font-size:12px;
+	font-weight:200;
+	margin-left:10px;
+}
+
+.footer-list-menu {
+	max-width: 1400px;
+	margin:20px auto; 
+	list-style:none;
+	text-align:center;
+}
+
+.footer-list-menu li{
+	margin-left: -40px;
+	display: inline-block;
+	min-width:220px;
+	cursor:pointer;
+	padding:5px 3px;
+}
+
+.footer-list-menu li:hover{
+	font-weight: 600;
+	background-color:rgba(255,255,255,0.25);
+}
+
+.copyright-div {
+	padding-top:20px;
+	padding-bottom:20px;
+}
+
+.form-job-offer{
+	color:#fff;
+	float:right;
+	background-color:rgba(0,0,0,0.25);
+	padding:20px;
+	border-radius:8px;
+	margin-right:3%;
+}
+
+.modal-show-offer{
+	z-index:100000 !important;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	min-height:100vh;
+	background-color:rgba(255,255,255,0.8);
+}
+
+.modal-show-offer-div {
+	z-index:10000;
+	width:90%;
+	max-width:1400px;
+	border-radius:8px;
+	min-height:86vh;
+	margin:7vh auto;
+}
+
+.show-offer-text{
+	font-weight:200;
+	font-family:"Roboto",sans-serif !important;
+	color:#fff;
+	text-align:justify;
+}
+
+.margin-bottom20{
+	margin-bottom:20px;
+}
+
+.old-price{
+	margin:50px auto; width: 40%; font-size:22px; text-decoration:line-through;
+}
+
+.offer-price{
+	border-radius: 8px; margin:50px auto; text-align:center; font-size:25px;font-family:"Roboto",sans-serif !important;color:#fff;
+}
+
+.offer-price h3{
+	color:#fff;text-align:center;
+}
+
+
+/*
 @media only screen and (min-width : 480px) {
 	.jumbotron{
 		padding:8px;
@@ -259,14 +440,12 @@ a {
 
 }
 
-/* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
 	body{
 		backgound-color:#00ff00 !important;
 	}
 }
 
-/* Medium Devices, Desktops */
 @media only screen and (min-width : 992px) {
 	.jumbotron h1{
 		font-size: 2em !important;
@@ -285,11 +464,9 @@ a {
 	}
 }
 
-/* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) {
 	body{
 		backgound-color:#000 !important;
 	}
 }
-
-
+*/
