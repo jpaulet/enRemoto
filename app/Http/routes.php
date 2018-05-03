@@ -27,10 +27,18 @@ $app->get('password/reset/{token}', ['uses' => 'App\Http\Controllers\Auth\Passwo
 $app->post('password/reset', ['uses' => 'App\Http\Controllers\Auth\PasswordController@postReset']);
 
 
-$app->get('dream', ['uses' => 'App\Http\Controllers\DreamController@index']);
-$app->post('dream', ['uses' => 'App\Http\Controllers\DreamController@store']);
-$app->put('dream/{id}', ['uses' => 'App\Http\Controllers\DreamController@update']);
-$app->delete('dream/{id}', ['uses' => 'App\Http\Controllers\DreamController@destroy']);
+
+$app->get('api', ['uses' => 'App\Http\Controllers\Controller@index']);
+$app->get('api/import', ['uses' => 'App\Http\Controllers\Controller@import']);
 
 
+$app->get('api/create', ['uses' => 'App\Http\Controllers\Api@create']);
+$app->get('api/jobs', ['uses' => 'App\Http\Controllers\Api@jobs']);
+$app->get('api/job/{id}', ['uses' => 'App\Http\Controllers\Api@job']);
+$app->post('api/job', ['uses' => 'App\Http\Controllers\Api@createJob']);
+//$app->put('api/job/{editLink}', ['uses' => 'App\Http\Controllers\Api@updateJob']);
+$app->delete('api/job/{id}/{editLink}', ['uses' => 'App\Http\Controllers\Api@destroyJob']);
 
+$app->get('job/{slug}/{editLink}', ['uses' => 'App\Http\Controllers\Api@editJob']);
+
+$app->get('api/createRemoteJobs', ['uses' => 'App\Http\Controllers\Api@createRemoteJobs']);

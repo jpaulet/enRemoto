@@ -54,6 +54,7 @@ $app->singleton(
 |
 */
 
+
 $app->middleware([
     Illuminate\Cookie\Middleware\EncryptCookies::class,
     Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,

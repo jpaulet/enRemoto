@@ -34,8 +34,4 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token', 'email', 'id', 'created_at', 'updated_at', 'enterprise_id'];
 
-
-    private function getEnterpriseId(){
-        return $this->enterprise_id;
-    }
 }

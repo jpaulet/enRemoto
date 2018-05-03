@@ -4,7 +4,18 @@ body{
 
 .navbar{
 	margin-bottom:0px;
+	width:100%;
+	position:fixed;
+	background-color: #fff;
+	box-shadow: 0 4px 2px -2px gray;
+	height: 52px;
+	border-radius:0px;
+	z-index: 100000;
+}
+
+.navbar-container{
 	max-width:1400px;
+	width:100%;
 	margin:0px auto;
 }
 
@@ -12,6 +23,10 @@ a {
 	color:#000 !important;
 }
 
+.hasError {
+	border-color:#de3c3c;
+	box-shadow:inset 0 0 2px 1px #de3c3c;
+}
 .logo-text-header{
 	color:#333;
 	font-size:12px;
@@ -36,15 +51,15 @@ a {
 }
 
 .jumbotron-title{
-	margin-top: 25px;
+	margin-top: 40px;
 	font-family: 'Roboto', sans-serif !important;
-	font-size:2em !important;
+	font-size:1.6em !important;
 	color:#fff !important;
 	font-weight: 400;
 }
 .jumbotron-text{
 	font-family: 'Roboto', sans-serif !important;
-	font-size: 1.2em !important;
+	font-size: 1em !important;
 	color:#fff;	
 	font-weight: 300;
 	text-align: justify;
@@ -69,11 +84,12 @@ a {
 	color:#555;
 	margin-bottom:1px;
 	margin-right:1px;
+	font-size:12px !important;
 }
 
 .btn-category span{
 	background-color:#eee !important;
-	font-size:12px;
+	font-size:10px;
 	font-weight: 300;
 	color:#555;
 }
@@ -84,11 +100,18 @@ a {
 }
 
 .show-offer-button{
-	border-radius:1px solid #888;color:#888;
+	border:0px;
+	color:#fff !important;
+	padding:10px !important;
+	background-color:#b93a32 !important;
 }
 
 .side-content-column{
 	border-right:1px solid #eee;
+	/*
+	position: sticky;
+	top: 70px;
+	*/
 }
 
 .content-title{
@@ -140,7 +163,7 @@ a {
 }
 
 /* Job Table */
-.no-job-list{
+.no-job-div{
 	text-align:center;
 	margin-top:20vh;
 	width:80%;
@@ -167,7 +190,7 @@ a {
 .job-logo{
 	width:64px;
 	border-radius:8px;
-	background-color: #eee;
+	background-color: #ccc;
 	text-align:center;
 	line-height: 64px;
 	font-size:24px;
@@ -176,12 +199,15 @@ a {
 .job-tags{
 	padding-top:28px;
 	width:24%;
+	overflow:hidden;
+	max-height:75px;
 }
 
 .job-date{
 	width:8%;
 	padding-top:30px;
 	font-size:12px;
+	/*line-height:55px !important;*/
 }
 
 .job-apply{
@@ -200,21 +226,25 @@ a {
 }
 
 .text-job-logo{
-	min-width:48px;min-height:48px;
+	min-width:48px;
+	min-height:48px;
+	color:#fff;
 }
 
 .job-info h2{
 	margin-top:8px;
 	margin-bottom:0px;
-	font-size: 22px;
+	font-size: 16px;
+	font-weight: 600;
 }
 
 .job-info p{
-	font-size:14px;
+	font-size:12px;
 }
 
 .btn-apply{
 	display:none;
+	margin-top: 4px;
 }
 
 .job-badge{
@@ -316,18 +346,18 @@ a {
 }
 
 .close-modal-button {
-	color:#fff;
-	text-align:center;
-	cursor:pointer;
-	position:fixed;
-	bottom:12vh;
-	width:90%;
-	font-weight:600;
+	color: #fff;
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	top: 10px;
+	font-weight: 600;
+	right: 0px;
 }
 
 .footer-bar{
 	margin-top:60px;
-	background-color:#de3c3c;
+	background-color:#b93a32;
 	color:#fff;
 	min-height:10vh;
 	padding:20px 0px;
@@ -366,12 +396,21 @@ a {
 }
 
 .form-job-offer{
-	color:#fff;
-	float:right;
-	background-color:rgba(0,0,0,0.25);
-	padding:20px;
-	border-radius:8px;
-	margin-right:3%;
+	color: #fff;
+	background-color: rgba(0,0,0,0.5);
+	padding: 40px;
+	border-radius: 8px;
+	max-width:850px;
+}
+
+.modal-show-info-div{
+	height:100%;
+	padding:60px 30px 60px 60px;
+}
+
+.modal-show-offer-right{
+	height:100%;
+	padding:30px 30px;
 }
 
 .modal-show-offer{
@@ -385,12 +424,11 @@ a {
 }
 
 .modal-show-offer-div {
-	z-index:10000;
-	width:90%;
-	max-width:1400px;
-	border-radius:8px;
-	min-height:86vh;
-	margin:7vh auto;
+	z-index: 10000000;
+    min-height: 100vh;
+    position: fixed;
+    top: 0%;
+    min-width:100%;
 }
 
 .show-offer-text{
@@ -470,3 +508,153 @@ a {
 	}
 }
 */
+
+.page{
+	min-height: 40vh;
+	max-width:1400px;
+	margin:0px auto;
+}
+
+.highlight-title{
+	color:#b93a32;
+	font-weight:600;
+}
+
+.datos_contacto{
+
+}
+
+/* cookies */
+#barraaceptacion {
+    display:none;
+    position:fixed;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    padding-bottom:20px;
+    width:100%;
+    text-align:center;
+    min-height:40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color:#fff;
+    z-index:99999;
+}
+ 
+.inner {
+    width:100%;
+    position:absolute;
+    padding-left:5px;
+    font-family:verdana;
+    font-size:12px;
+    top:30%;
+}
+ 
+.inner a.ok {
+    padding:4px;
+    color:#00ff2e;
+    text-decoration:none;
+}
+ 
+.inner a.info {
+    padding-left:5px;
+    text-decoration:none;
+    color:#faff00;
+}
+
+.back_text_button{
+	color:#000;
+	padding:30px;
+	text-decoration:underline;
+	font-size:15px;
+	cursor:pointer;
+	font-weight:600;
+}
+
+
+
+
+
+/* contact */
+/* Style inputs */
+.input_map {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+.input_map_submit {
+    background-color: #b93a32;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.input_map_submit:hover {
+    background-color: #fff;
+}
+
+/* Style the container/contact section */
+.container_map {
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Create two columns that float next to eachother */
+.column_map {
+    float: left;
+    width: 50%;
+    margin-top: 6px;
+    padding: 20px;
+}
+
+/* Clear floats after the columns */
+.row_map:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .column_map, .input_map_submit {
+        width: 100%;
+        margin-top: 0;
+    }
+}
+
+.promoted {
+	background-color: #ffffcc;
+	border-left: 6px solid #ffeb3b;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+.categoria1{ background:linear-gradient(135deg, rgb(195, 236, 82) 0%, rgb(11, 162, 157) 100%); }
+.categoria2{ background:linear-gradient(135deg, rgb(15, 240, 179) 0%, rgb(3, 110, 217) 100%); }
+.categoria3{ background:linear-gradient(135deg, rgb(197, 108, 214) 0%, rgb(52, 37, 175) 100%); }
+.categoria4{ background:linear-gradient(135deg, rgb(243, 98, 101) 0%, rgb(150, 18, 118) 100%); }
+.categoria5{ background:linear-gradient(135deg, rgb(250, 217, 97) 0%, rgb(247, 107, 28) 100%); }
+.categoria6{ background:linear-gradient(135deg, rgb(24, 78, 104) 0%, rgb(87, 202, 133) 100%); }
+.categoria7{ background:linear-gradient(135deg, rgb(240, 47, 194) 0%, rgb(96, 148, 234) 100%); }
+.categoria8{ background:linear-gradient(135deg, rgb(98, 39, 116) 0%, rgb(197, 51, 100) 100%); }
+.categoria9{ background:linear-gradient(135deg, rgb(252, 223, 138) 0%, rgb(243, 131, 129) 100%); }
+.categoria10{ background:linear-gradient(135deg, rgb(206, 159, 252) 0%, rgb(115, 103, 240) 100%); }
+.categoria11{ background:linear-gradient(135deg, rgb(223, 236, 81) 0%, rgb(115, 170, 10) 100%); }
+.categoria12{ background:linear-gradient(135deg, rgb(255, 87, 185) 0%, rgb(167, 4, 253) 100%); }
+.categoria13{ background:linear-gradient(135deg, rgb(91, 36, 122) 0%, rgb(27, 206, 223) 100%); }
+.categoria14{ background:linear-gradient(135deg, rgb(113, 23, 234) 0%, rgb(234, 96, 96) 100%); }
+.categoria15{ background:linear-gradient(135deg, rgb(19, 241, 252) 0%, rgb(4, 112, 220) 100%); }
+.categoria16{ background:linear-gradient(135deg, rgb(113, 23, 234) 0%, rgb(234, 96, 96) 100%); }
+.categoria17{ background:linear-gradient(135deg, rgb(227, 227, 227) 0%, rgb(93, 104, 116) 100%); }
+.category-badge{
+	float:left;
+	margin-left:-6px;
+	margin-right:5px;
+	width:8px;
+	height:8px;
+	margin-top:4px;
+}
