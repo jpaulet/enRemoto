@@ -53,6 +53,9 @@ var vm = new Vue({
         section: 'trabajos',
         total: 0,
         idViewJob: null,
+        imageData: null,
+        showNewJobDetail: false,
+        newJobDescription: null,
     },
 
     ready: function() {
@@ -250,7 +253,13 @@ var vm = new Vue({
             });
         },
 
-        create: function(event) {            
+        create: function(event) {
+            this.newJob.description = $('.ql-editor').html();  
+            
+            if(this.newJob.description === '<p><br></p>'){
+                this.newJob.description = event;
+            }
+
             valid = (
                 this.newJob.title && 
                 this.newJob.description && 
@@ -289,56 +298,47 @@ var vm = new Vue({
                 return false;
             }
 
+            console.log('passo per aqui..');
+            event.preventDefault();
+            console.log(event);
+
+            //If there is a job already created, return.
             if(this.jobCreated){ return; }
+
             this.$http.post('api/job', this.newJob, (data) => {
+                console.log('api/job...');
                 this.jobCreated = true;
 
-                /*
                 var handler = StripeCheckout.configure({
                     key: 'pk_test_OMQPZa6KHK9Vezj2gtCkdGkW',
-                    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
                     locale: 'auto',
-                    token: function(token) {
-                      // You can access the token ID with `token.id`.
-                      // Get the token ID to your server-side code for use.
-                    $.post("", {token: token, type: 'charge'}, function(res){
-                        if(res.status){
-                            $('form').submit();
-                        }
-                    },"json");
-                      console.log(token);
+                    email: this.newJob.email,
+                    token: (token) => {
+                        // Use the token to create the charge with a server-side script.
+                        // You can access the token ID with `token.id`
+
+                        this.$http.post('api/create', {'stripeToken':token.id,'stripeEmail':this.newJob.email}, (data) => {
+                            console.log(data);
+                        });
+                        // $('#createNewJob').submit();
                     }
                 });
 
+                var stripeAmount = 1000; // integer, in the smallest currency unit
+                var displayAmount = (stripeAmount / 100).toFixed(2);
+                var panelLabel = "" + displayAmount;
+                // Open Checkout with further options
                 handler.open({
-                  image: '/logo.png',
-                  name: 'Shop.com',
-                  description: 'Product',
-                  email: userEmail,
-                  currency: 'gbp',
-                  amount: 2000
+                    name: 'enRemoto',
+                    description: 'Crea tu oferta en el portal de trabajo remoto para ºhispanohablantes.',
+                    panelLabel: panelLabel
                 });
-                */
-
+                
             }).error( (data) => {
                 this.jobCreated = false;
                 this.error.general = "Lamentablemente la oferta no se ha podido crear correctamente. Puede ponerse en contacto con info(at)enremoto.com para obtener ayuda. Se ha enviado un correo con su información y nos pondremos en contacto con usted lo antes posible para solucionar esta situacion. Atentamente, el equipo de enRemoto.";
                 $('.stripe_checkout_app').hide();               
             });
-
-            /*
-            this.newJob = {
-                title: null,
-                description: null,
-                tag: null,
-                category: null,
-                salary: null,
-                company: null,
-                email: null,
-                logo: null,
-                link: null
-            };
-            */
         },
 
         validEmail:function(email) {
@@ -370,11 +370,6 @@ var vm = new Vue({
             }).error( (data) => {
                 this.error.updateContent = data.content[0];
             });            
-        },
-
-        onFileChange: function(e) {
-          const file = e.target.files[0];
-          this.newJob.logo = URL.createObjectURL(file);
         },
 
         getCookie: function (c_name){
@@ -419,6 +414,44 @@ var vm = new Vue({
             }
             this.total = total;
         },
+
+        onFileChange: function(e) {
+          let files = e.target.files || e.dataTransfer.files;
+
+          var input = e.target;
+          // Ensure that you have a file before attempting to read it
+          if (input.files && input.files[0]) {
+              // create a new FileReader to read this image and convert to base64 format
+              var reader = new FileReader();
+              // Define a callback function to run, when FileReader finishes its job
+              reader.onload = (e) => {
+                  // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+                  // Read image as base64 and set to imageData
+                  this.imageData = e.target.result;
+              }
+              // Start the reader job - read file as a data url (base64 format)
+              reader.readAsDataURL(input.files[0]);
+          }
+
+          if (files.length <= 0) {
+            return;
+          }
+
+          this.upload(files[0]);
+        },
+
+        upload: function(file) {
+            var formData = new FormData();
+            formData.append('image', file); 
+            this.$http.post('api/uploadFile',formData).then( function(response){
+                this.error.logo = null;
+                console.log(response);                
+            }, function (response) {
+                this.imageData = null;
+                this.error = {};
+                this.error.logo = response.data;
+            });
+        }
     },
 
     filters: {

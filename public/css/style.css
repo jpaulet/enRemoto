@@ -24,8 +24,8 @@ a {
 }
 
 .hasError {
-	border-color:#de3c3c;
-	box-shadow:inset 0 0 2px 1px #de3c3c;
+	border-color:#de3c3c !important;
+	box-shadow:inset 0 0 2px 1px #de3c3c !important;
 }
 .logo-text-header{
 	color:#333;
@@ -43,6 +43,7 @@ a {
 	background-size: cover;
 	background-position: center;
 	height: 30vh;
+	padding:0px;
 }
 
 .jumbotron-div{
@@ -349,8 +350,8 @@ a {
 	color: #fff;
 	text-align: center;
 	cursor: pointer;
-	position: relative;
-	top: 10px;
+	position: fixed;
+	bottom: 10px;
 	font-weight: 600;
 	right: 0px;
 }
@@ -397,20 +398,21 @@ a {
 
 .form-job-offer{
 	color: #fff;
-	background-color: rgba(0,0,0,0.5);
-	padding: 40px;
-	border-radius: 8px;
-	max-width:850px;
+	background-color: rgba(0,0,0,0.45);
+	padding: 40px; 
+	/*border-radius: 8px;max-width:850px;*/
+	height:100%;
+	border-left:1px solid #111;
 }
 
 .modal-show-info-div{
-	height:100%;
 	padding:60px 30px 60px 60px;
 }
 
 .modal-show-offer-right{
 	height:100%;
-	padding:30px 30px;
+	/* padding:30px 30px; */
+	padding: 0px;
 }
 
 .modal-show-offer{
@@ -526,7 +528,7 @@ a {
 
 /* cookies */
 #barraaceptacion {
-    display:none;
+    display:block;
     position:fixed;
     left:0px;
     right:0px;
@@ -538,6 +540,10 @@ a {
     background-color: rgba(0, 0, 0, 0.5);
     color:#fff;
     z-index:99999;
+}
+
+#barraaceptacion a{
+	cursor:pointer;
 }
  
 .inner {
@@ -657,4 +663,17 @@ a {
 	width:8px;
 	height:8px;
 	margin-top:4px;
+}
+
+#editor-container {
+  background-color:#fff;
+  color:#333;
+  height: 170px;
+  font-size:13px;
+}
+#editor-container p{ font-size:13px; }
+#editor-container ol li{ font-size:13px; }
+#editor-container ul li{ font-size:13px; }
+.ql-toolbar.ql-snow{
+	background-color: #fff;
 }

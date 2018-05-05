@@ -179,12 +179,12 @@
                     </div>
 
                     <div v-for="( jobs_day, jobs_list) in jobs">
-                        <div style='width:100%;border-bottom:1px solid #000;font-weight:600;font-size:13px;padding-left:20px;margin-top:50px;'> {{jobs_day }} </div>        
+                        <div v-show="jobs_list.length != 0" style='width:100%;border-bottom:1px solid #000;font-weight:600;font-size:13px;padding-left:20px;margin-top:50px;'> {{jobs_day }} </div>        
                         <table v-show="jobs_list.length !== 0" class="table job-table">
                             <tr v-for="job in jobs_list" class="job-box" @click="idViewJob = job.title" :class="{ promoted: job.promoted }">
                                 <td class='job-logo-div'>
                                     <img v-if="job.logo" class='job-logo image-job-logo rounded' style="background:url('{{job.logo}}');background-size:100% 100%;">
-                                    <div v-else class='job-logo text-job-logo rounded' :class="categoria{{job.category}}">{{job.title | logotize}}</div>
+                                    <div v-else :class="'categoria'+job.category" class='job-logo text-job-logo rounded'>{{job.title | logotize}}</div>
                                 </td>
                                 <td class='job-info'>
                                     <h2>{{job.id}} {{ job.title }}</h2>
@@ -226,7 +226,7 @@
                                 </td>
                             </tr>        
                         </table>
-                        <div v-show="jobs_list.length == 0" style='text-align:center;padding:20px;color:#555;font-size:12px;'> Sin ofertas para este dia </div>
+                        <!-- <div v-show="jobs_list.length == 0" style='text-align:center;padding:20px;color:#555;font-size:12px;'> Sin ofertas para este dia </div> -->
                     </div>
                 </div>
             </div>
@@ -526,8 +526,7 @@
 
         <div v-show="showOffer" class="jumbotron jumbotron-fluid modal-show-offer-div"></div>
         <div v-show="showOffer" class="jumbotron jumbotron-fluid modal-show-offer-div" style='position:absolute;background-image:none;'>
-            <a style='position:fixed;top:20px;right:20px;background-color:#fff;border-radius:18px;width:18px;height:18px;text-align:center;line-height:17px;font-size:12px;cursor:pointer;' @click='(showOffer = false) || (error.general = null)'>x</a>
-          <div class="container col-md-5 modal-show-info-div">
+          <div class="container col-md-5 col-sm-12 modal-show-info-div">
             <h1 class="display-4 jumbotron-title">Crea tu oferta</h1>
             <p class="jumbotron-text">Contrata el mejor talento, esté dónde esté. </p>
 
@@ -555,10 +554,12 @@
 
             <div> 
                 <p style='color:#fff;font-size:14px;'> Así se verá su oferta: </p>
-                <table class="table job-table" style='background-color:#fff;border-radius:6px;'>
+                <table class="table job-table" style='background-color:#fff;border-radius:6px;' @click='showNewJobDetail = !showNewJobDetail'>
                     <tr class="job-box" style='border-bottom:0px;'>
                         <td class='job-logo-div'>
-                            <img v-if="newJob.logo !== null" class='job-logo image-job-logo rounded' :src="newJob.logo">
+                            <div class="image-preview" v-if="imageData.length > 0" >
+                                <img class="preview" :src="imageData" style='width:60px;height:60px;'>
+                            </div>
                             <div v-else class='job-logo text-job-logo rounded'>{{newJob.title | logotize}}</div>
                         </td>
                         <td class='job-info'>
@@ -571,19 +572,46 @@
                         <td class='job-date' style='width:30px;padding-top:25px;color:#555;'>
                             Ahora
                         </td>
-                    </tr>        
+                    </tr>
                 </table>
+                <div v-show='showNewJobDetail' style='background-color:#fff;border-radius:6px;'>
+                    <div style="float:left;margin-top:10px;margin-bottom:10px;font-weight:600;">{{newJob.company}}</div>
+                    <span v-if="newJob.salary !== ''" style='float:left;'>- {{newJob.salary}} </span>
+
+                    <div v-html="newJob.description" style='clear:both;display:block;max-width:450px;font-size:13px;text-align:justify;'> 
+                        {{ newJob.description }}
+                    </div>
+                    <hr>
+
+                    <a href="{{newJob.link}}" target='_blank' style='margin-left:40%;'>
+                        <button type="button" class="btn btn-warning btn-lg" style='background-color:#b93a32 !important;border:0px;'>Aplicar</button>
+                    </a>
+                    <hr>
+
+                    <p style='text-align:center;margin-bottom:10px;font-size:12px;'>
+                        Haga una referencia que encontró el trabajo en enRemoto, gracias por ayudarnos a que más empresas publiquen aquí.
+                    </p>
+
+                    <p style='text-align:justify;margin-bottom:40px;font-size:11px;'>
+                        <span style='font-weight:600;'> ⚠ Advertencia</span>: cuando solicite empleo, NUNCA tendrá que pagar para solicitarlo. Eso es una estafa! Siempre verifique que realmente está hablando con la empresa en el puesto de trabajo y no con un impostor. Las estafas en el trabajo remoto estan en auge, ¡ten cuidado! Al hacer clic en el botón para aplicar arriba, dejará enRemoto.io y accederá a la página de la aplicación del trabajo para esa compañía fuera de este sitio. enRemoto no acepta ninguna responsabilidad o responsabilidad como consecuencia de la confianza depositada en la información allí (sitios externos) o aquí.
+                    </p>
+                </div>
             </div>           
           </div>
-          <div class="container col-sm-7 modal-show-offer-right">
-            <form v-show="error.general === null" action="api/create" class="col-sm-12 col-md-12 form-job-offer" accept-charset="UTF-8" role="form" type="POST"> <!-- @submit.prevent="create"  -->
+          <div class="container col-md-7 col-sm-12 modal-show-offer-right">
+            <form id='createNewJob' v-show="error.general === null" action="api/create" class="col-sm-12 col-md-12 form-job-offer" accept-charset="UTF-8" role="form" type="POST"> <!-- @submit.prevent="create"  -->
+                <a style='position:fixed;top:20px;right:20px;background-color:#fff;border-radius:18px;width:18px;height:18px;text-align:center;line-height:17px;font-size:12px;cursor:pointer;' @click='(showOffer = false) || (error.general = null)'>x</a>
                 <div class="form-group">
                     <label for="title">*Título</label><small class="form-text">Ej: Desarrollador de Software.</small>
                     <input v-model="newJob.title" type="text" class="form-control" :class="error.title ? 'hasError' : ''" id="jobTitle" placeholder="{{error.title ? error.title : 'Título oferta'}}">                        
                 </div>
                 <div class="form-group">
                     <label for="description">*Descripción</label><small class="form-text">Ej: Buscamos desarrollador PHP con más de 5 años de experiéncia....</small>
-                    <textarea v-model="newJob.description" type="text" class="form-control" :class="error.description ? 'hasError' : ''" id="jobDescription" placeholder="{{error.description ? error.description : 'Descripción de la oferta... puedes usar markup para formatear el texto'}}"></textarea>                        
+                    <textarea style='display:none;' v-model="newJob.description" type="text" class="form-control"  id="jobDescription" placeholder="{{error.description ? error.description : 'Descripción de la oferta... puedes usar markup para formatear el texto'}}"></textarea>                        
+
+                    <!-- Create the toolbar container -->
+                    <div id="editor-container" :class="error.description ? 'hasError' : ''"></div>
+
                 </div>
                 <div class="form-group">
                     <label for="title">*Categoría</label><small class="form-text">Seleccione la categoría más adecuada.</small>
@@ -627,7 +655,8 @@
                 </div>                    
                 <div class="form-group">
                     <label for="title">Logo</label><small class="form-text">Formato: JPG, PNG, GIF. Tamaño óptimo: 64x64 pixeles.</small>
-                    <input v-model="newJob.logo" @change='onFileChange' type="file" class="form-control" id="jobLogo" placeholder="Logo empresa">                        
+                    <p v-if="error.logo !== null">{{error.logo}}</p>
+                    <input v-model="newJob.logo" @change="onFileChange" accept="image/*" type="file" class="form-control" id="jobLogo" placeholder="Logo empresa">                        
                 </div>
                 
                 <div class="form-group">
@@ -714,19 +743,35 @@
 
 
         <!--//BLOQUE COOKIES-->
-        <div id="barraaceptacion" style="display: block;">
+        <div id="barraaceptacion">
             <div class="inner">
                 Solicitamos su permiso para obtener datos estadísticos de su navegación en esta web, en cumplimiento del Real 
                 Decreto-ley 13/2012. Si continúa navegando consideramos que acepta el uso de cookies.
                 <a href="javascript:void(0);" class="ok" @click="storeCookie();"><b>OK</b></a> | 
-                <a @click="section = 'privacidad'" class="info" style='cursor:pointer;'>Más información</a>
+                <a @click="section = 'privacidad'" class="info">Más información</a>
             </div>
-        </div>
+        </div>        
 
+        <script src="https://checkout.stripe.com/checkout.js"></script>
         <script src="./js/jquery.min.js"></script>
         <script src="./js/bootstrap.min.js"></script> 
         <script src="./js/vue.min.js"></script>
         <script src="./js/vue-resource.min.js"></script> 
         <script src="./js/app.js"></script> 
+
+        <!-- Main Quill library -->
+        <link href="//cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+        <script src="//cdn.quilljs.com/1.0.0/quill.min.js"></script>
+        <!-- Initialize Quill editor -->
+        <script>
+          var quill = new Quill('#editor-container', {
+              modules: {
+                toolbar: true
+              },
+              placeholder: 'Descripción de la oferta... puedes usar HTML para formatear el texto',
+              theme: 'snow'  // or 'bubble'
+            });
+        </script>
+
     </body>
 </html>
