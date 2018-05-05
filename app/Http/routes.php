@@ -32,7 +32,7 @@ $app->get('api', ['uses' => 'App\Http\Controllers\Controller@index']);
 $app->get('api/import', ['uses' => 'App\Http\Controllers\Controller@import']);
 
 
-$app->get('api/create', ['uses' => 'App\Http\Controllers\Api@create']);
+$app->post('api/create', ['uses' => 'App\Http\Controllers\Api@create']);
 $app->get('api/jobs', ['uses' => 'App\Http\Controllers\Api@jobs']);
 $app->get('api/job/{id}', ['uses' => 'App\Http\Controllers\Api@job']);
 $app->post('api/job', ['uses' => 'App\Http\Controllers\Api@createJob']);
@@ -42,3 +42,21 @@ $app->delete('api/job/{id}/{editLink}', ['uses' => 'App\Http\Controllers\Api@des
 $app->get('job/{slug}/{editLink}', ['uses' => 'App\Http\Controllers\Api@editJob']);
 
 $app->get('api/createRemoteJobs', ['uses' => 'App\Http\Controllers\Api@createRemoteJobs']);
+
+$app->post('api/uploadFile', ['uses' => 'App\Http\Controllers\Api@uploadFile']);
+
+/*
+$app->post('/uploadFile', function (Request $request) {
+    $validator = Validator::make($request->all(), [
+        'image' => 'required|image64:jpeg,jpg,png'
+    ]);
+    if ($validator->fails()) {
+        return response()->json(['errors'=>$validator->errors()]);
+    } else {
+        $imageData = $request->get('image');
+        $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . explode('/', explode(':', substr($imageData, 0, strpos($imageData, ';')))[1])[1];
+        Image::make($request->get('image'))->save(public_path('images/').$fileName);
+        return response()->json(['error'=>false]);
+    }
+});
+*/
