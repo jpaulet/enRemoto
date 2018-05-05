@@ -34,8 +34,7 @@ class Api extends BaseController
         return response()->json(Job::find($id));
     }
 
-    public function create(Request $request){
-        
+    public function create(Request $request){        
         \Stripe\Stripe::setApiKey("sk_test_ov6iLYrsLOXTPTMNJPwadRpc");
 
         $token  = $request['stripeToken'];
@@ -51,6 +50,7 @@ class Api extends BaseController
             'source'  => $token
         ));
 
+        // Make the payment on Stripe
         $charge = \Stripe\Charge::create(array(
             'customer' => $customer->id,
             'amount'   => 5000,
@@ -69,119 +69,36 @@ class Api extends BaseController
         $job->editLink = $random_string;
         $job->active = true;
         $job->promoted = true;
+        $job->logo = str_replace('C:\fakepath','./img/uploads/',$job->logo);
         $job->save();
 
         return redirect('/');
     }
 
+    //Returns string with $text converted to slug format or `n-a`
     static public function slugify($text){
-      // replace non letter or digits by -
-      $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-      // transliterate
-      $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-      // remove unwanted characters
-      $text = preg_replace('~[^-\w]+~', '', $text);
-
-      // trim
-      $text = trim($text, '-');
-
-      // remove duplicate -
-      $text = preg_replace('~-+~', '-', $text);
-
-      // lowercase
-      $text = strtolower($text);
-
-      if (empty($text)) {
-        return 'n-a';
-      }
-
-      return $text;
+      $text = preg_replace('~[^\pL\d]+~u', '-', $text);     // replace non letter or digits by -     
+      $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);  // transliterate
+      $text = preg_replace('~[^-\w]+~', '', $text);         // remove unwanted characters
+      $text = trim($text, '-');                             // trim
+      $text = preg_replace('~-+~', '-', $text);             // remove duplicate
+      $text = strtolower($text);                            // lowercase
+      return empty($text) ? 'n-a' : $text;
     }
 
-    public function createJob(Request $request)
-    {    
-
-        /*
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|min:5|max:255',
-            'description' => 'required|min:5|max:2000',          
-            'category' => 'required|numeric',
-            'tags' => 'required|min:2|max:255',
-            'company' => 'required|min:2|max:255',
-            'email' => 'required|email',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('/')
-                    ->withErrors($validator)
-                    ->withInput();
+    public function uploadFile(Request $request){
+        try{          
+            $file = $request->file('image');
+            $destinationPath = 'img/uploads';
+            $file->move($destinationPath,$file->getClientOriginalName());
+        }catch (\Exception $e){
+            return response()->json($e->getMessage(),500);
         }
+    }
 
-        
-        $this->validate($request, [
-          'title' => 'required|min:5|max:255',
-          'description' => 'required|min:5|max:2000',          
-          'category' => 'required|numeric',
-          'tags' => 'required|min:2|max:255',
-          'company' => 'required|min:2|max:255',
-          'email' => 'required|email'
-        ]);
-        */
-
-        /*
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-        // Check if image file is a actual image or fake image
-        if(isset($_POST["submit"])) {
-            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-            if($check !== false) {
-                echo "File is an image - " . $check["mime"] . ".";
-                $uploadOk = 1;
-            } else {
-                echo "File is not an image.";
-                $uploadOk = 0;
-            }
-        }
-        */
-        if($request->hasFile('logo')){
-            $picName = $request->file('logo');
-            $destinationPath = '/public/img/uploads/';
-            $request->file('logo')->move($destinationPath, $picName);
-        }
-
+    public function createJob(Request $request){    
         $job = Job::create($request->all());
         return response()->json($job, 201);
-
-        /*
-        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789_+.-$%&()=';
-        $random_string = '';
-        $max = strlen($characters) - 1;
-        $random_string_length = 60;
-        for ($i = 0; $i < $random_string_length; $i++) {
-            $random_string .= $characters[mt_rand(0, $max)];
-        }
-
-        $promoted = true;
-        $job = new Job();
-        $job->title = $request->input('title');
-        $job->description = $request->input('description');
-        $job->category = $request->input('category');
-        $job->tags = $request->input('tags');
-        $job->salary = $request->input('salary');
-
-        $job->company = $request->input('company');
-        $job->logo = $request->input('file');
-        $job->email = $request->input('email');
-        $job->editLink = $random_string;
-        $job->promoted = true;
-        $job->save();
-
-        echo "<pre>"; var_dump($job); echo "</pre>";
-        */
     }
 
     public function editJob($slug,$editLink){        
@@ -244,7 +161,7 @@ class Api extends BaseController
     }
 
     
-    public static function processImage(UploadedFile $photo) {
+    public static function processImage(UploadedFile $photo){
         $photo_name =  Str::random(8) .  '.' . $photo->getClientOriginalExtension();
         Image::make($photo)->fit(128)->save($this->path.$photo_name);
         return $photo_name;
